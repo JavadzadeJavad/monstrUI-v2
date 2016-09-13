@@ -1,5 +1,6 @@
 var CMSJobStatus = {
 
+
     Configuration: {
         locale: 'en',
         ssb_status_url: "https://lcgsens01o.jinr.ru/rest/CMSJobStatus/lastStatus?delta=1",
@@ -67,6 +68,8 @@ var CMSJobStatus = {
         status_table_id: null,
         chart: null,
 
+        
+
         initialize: function(appHolderId) {
             this.status_table_id = appHolderId;
 
@@ -124,11 +127,26 @@ var CMSJobStatus = {
             });
         }
     },
+
+
+    jquery:{
+        hideUpdate: function(){
+            $('.CMSJobStatus-update').hide();
+        },
+    
+        showUpdate: function(){
+            $('.CMSJobStatus-update').show();
+        }
+
+    },
+
     //============================================================================
     //    CONTROLLER
 
     //============================================================================
     Controller: {
+
+        
         appHolderId: '',
 
         startApp: function(appHolderId) {
@@ -137,7 +155,12 @@ var CMSJobStatus = {
             CMSJobStatus.Controller.loadStatus();
         },
         // TODO: on Fail
+
+
         loadStatus: function() {
+         
+            CMSJobStatus.jquery.showUpdate(),
+
             $.ajax({
                 url:CMSJobStatus.Configuration.ssb_status_url,  
                 success: function(data) {
@@ -145,8 +168,11 @@ var CMSJobStatus = {
                    CMSJobStatus.View.fillStatusTableWithData();
                     //setTimeout(JobStatus.Controller.loadStatus, 60000);
                 }
-            });
+            }),
+            
+            CMSJobStatus.jquery.hideUpdate()
         },        
+
 
         getJobStatusData: function (site_name) {
             return CMSJobStatus.Model.jobStatus;
