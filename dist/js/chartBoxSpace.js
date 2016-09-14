@@ -3,6 +3,8 @@ var app = angular.module('myApp',[]);
 app.controller('maincontroller', function(){
 	$(window).load(function(){
 		CMSJobStatus.startApp("#CMSJobStatus_AppHolder");
+
+		CMSJobStatusTwo.startApp("#CMSJobStatusTwo_AppHolder");
 	});
 })
 
