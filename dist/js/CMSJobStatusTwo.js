@@ -25,7 +25,8 @@ var CMSJobStatusTwo = {
             'aborted': {'color':'blue', 'caption': 'Aborted'},
             'cancelled': {'color':'black', 'caption': 'Cancelled'}
         },
-
+// TODO: Попробовать исправить CMSJobStatus.js
+// TODO: Этот участок кода изучить
         setJobStatus: function(response) {
             var data = response.data;
             console.log(data);
@@ -41,8 +42,9 @@ var CMSJobStatusTwo = {
                     sites_summary[data[i].site_name][this.options[j]] += data[i][this.options[j]];
                 }            
             }
-
-            for (var site in sites_summary) this.sites.push(site);
+            this.sites = []; // TODO: попробовать не удалять this.sites, а обновить их
+            for (var site in sites_summary) 
+                this.sites.push(site);
             this.sites = this.sites.sort();
             console.log(this.sites);
 
@@ -60,6 +62,7 @@ var CMSJobStatusTwo = {
             console.log(series);
             this.jobStatus = series;
         },
+// Изучать до этого момента.
     },
     //============================================================================
     //    VIEW
@@ -158,19 +161,26 @@ var CMSJobStatusTwo = {
 
 
         loadStatus: function() {
-         
-            CMSJobStatusTwo.jquery.showUpdate(),
+            console.log(new Date());
+            CMSJobStatusTwo.jquery.showUpdate();
 
             $.ajax({
                 url:CMSJobStatusTwo.Configuration.ssb_status_url,  
                 success: function(data) {
-                   CMSJobStatusTwo.Model.setJobStatus(data);
-                   CMSJobStatusTwo.View.fillStatusTableWithData();
-                    //setTimeout(JobStatus.Controller.loadStatus, 60000);
+                    console.log('AJAX.Success');
+                    CMSJobStatusTwo.Model.setJobStatus(data);
+                    CMSJobStatusTwo.View.fillStatusTableWithData();
+                    setTimeout(CMSJobStatusTwo.Controller.loadStatus, 10000);
+                },
+                error: function(jqXHR, status, error_thrown) {
+                    console.log('AJAX.Error');
+                },
+                complete: function(jqXHR, status) {
+                    console.log('AJAX.Complete');
                 }
-            }),
-            
-            CMSJobStatusTwo.jquery.hideUpdate()
+            });
+            console.log(new Date());
+            CMSJobStatusTwo.jquery.hideUpdate();
         },        
 
 

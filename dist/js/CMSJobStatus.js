@@ -159,19 +159,26 @@ var CMSJobStatus = {
 
         loadStatus: function() {
          
-            CMSJobStatus.jquery.showUpdate(),
+            CMSJobStatus.jquery.showUpdate();
 
             $.ajax({
                 url:CMSJobStatus.Configuration.ssb_status_url,  
                 success: function(data) {
-                   CMSJobStatus.Model.setJobStatus(data);
-                   CMSJobStatus.View.fillStatusTableWithData();
-                    //setTimeout(JobStatus.Controller.loadStatus, 60000);
+                    console.log('AJAX.Success');
+                    CMSJobStatus.Model.setJobStatus(data);
+                    CMSJobStatus.View.fillStatusTableWithData();
+                    setTimeout(CMSJobStatus.Controller.loadStatus, 6000);
+                },
+                error: function(jqXHR, status, error_thrown) {
+                    console.log('AJAX.Error');
+                },
+                complete: function(jqXHR, status) {
+                    console.log('AJAX.Complete');
                 }
-            }),
+            });
             
-            CMSJobStatus.jquery.hideUpdate()
-        },        
+            //CMSJobStatus.jquery.hideUpdate()
+        },            
 
 
         getJobStatusData: function (site_name) {
