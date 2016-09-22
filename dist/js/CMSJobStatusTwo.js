@@ -39,12 +39,28 @@ var CMSJobStatusTwo = {
                     }
                 }
                 for (var j=0; j<this.options.length; j++){
-                    sites_summary[data[i].site_name][this.options[j]] += data[i][this.options[j]];
+                    sites_summary[data[i].site_name][this.options[j]] += data[i][this.options[j]];  
+
                 }            
+            };
+
+            //this.sites = []; // TODO: попробовать не удалять this.sites, а обновить их
+
+            var new_site = [];
+            for (var site in sites_summary){
+                new_site.push(site);
+                for(var i=0; i<new_site.length; i++){   
+                    if(new_site[i] == site){
+                        //console.log(new_site[i]);
+                        this.sites[i] = new_site[i];   
+                    }       
+                }
+                //console.log(sites_summary); 
+                //console.log(site);    
             }
-            this.sites = []; // TODO: попробовать не удалять this.sites, а обновить их
-            for (var site in sites_summary) 
-                this.sites.push(site);
+            //console.log(new_site);
+
+                
             this.sites = this.sites.sort();
             console.log(this.sites);
 
@@ -134,11 +150,11 @@ var CMSJobStatusTwo = {
 
     jquery:{
         hideUpdate: function(){
-            $('.CMSJobStatusTwo-update').hide();
+            $('#CMSJobStatusTwo-update').hide();
         },
     
         showUpdate: function(){
-            $('.CMSJobStatusTwo-update').show();
+            $('#CMSJobStatusTwo-update').show();
         }
 
     },
@@ -170,7 +186,7 @@ var CMSJobStatusTwo = {
                     console.log('AJAX.Success');
                     CMSJobStatusTwo.Model.setJobStatus(data);
                     CMSJobStatusTwo.View.fillStatusTableWithData();
-                    setTimeout(CMSJobStatusTwo.Controller.loadStatus, 10000);
+                    setTimeout(CMSJobStatusTwo.Controller.loadStatus, 3000);
                 },
                 error: function(jqXHR, status, error_thrown) {
                     console.log('AJAX.Error');

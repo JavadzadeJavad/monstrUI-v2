@@ -26,6 +26,7 @@ var CMSJobStatus = {
             'cancelled': {'color':'black', 'caption': 'Cancelled'}
         },
 
+
         setJobStatus: function(response) {
             var data = response.data;
             console.log(data);
@@ -42,7 +43,20 @@ var CMSJobStatus = {
                 }            
             }
 
-            for (var site in sites_summary) this.sites.push(site);
+            var new_site = [];
+            for (var site in sites_summary){
+                new_site.push(site);
+                for(var i=0; i<new_site.length; i++){   
+                    if(new_site[i] == site){
+                        //console.log(new_site[i]);
+                        this.sites[i] = new_site[i];   
+                    }       
+                }
+                //console.log(sites_summary); 
+                //console.log(site);    
+            }
+            //console.log(new_site);
+
             this.sites = this.sites.sort();
             console.log(this.sites);
 
@@ -131,11 +145,11 @@ var CMSJobStatus = {
 
     jquery:{
         hideUpdate: function(){
-            $('.CMSJobStatus-update').hide();
+            $('#CMSJobStatus-update').hide();
         },
     
         showUpdate: function(){
-            $('.CMSJobStatus-update').show();
+            $('#CMSJobStatus-update').show();
         }
 
     },
@@ -167,7 +181,7 @@ var CMSJobStatus = {
                     console.log('AJAX.Success');
                     CMSJobStatus.Model.setJobStatus(data);
                     CMSJobStatus.View.fillStatusTableWithData();
-                    setTimeout(CMSJobStatus.Controller.loadStatus, 6000);
+                    setTimeout(CMSJobStatus.Controller.loadStatus, 2000);
                 },
                 error: function(jqXHR, status, error_thrown) {
                     console.log('AJAX.Error');
